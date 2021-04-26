@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_PATTERN">%d %-5p [%t] %-30C{1.} (%F:%L) - %m%n</Property>
+        <Property name="APP_LOG_ROOT">/var/lib/tomcat9/logs</Property>
+    </Properties>
+
     <Appenders>
         <Console name="STDOUT" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d %-5p [%t] %-30C{1.} (%F:%L) - %m%n"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
-        <File name="FILE" fileName="app.log" >
-            <PatternLayout pattern="%d %-5p [%t] %-30C{1.} (%F:%L) - %m%n"/>
+        <File name="FILE" fileName="${APP_LOG_ROOT}/short_video_app.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
         </File>
-
     </Appenders>
     <Loggers>
-        <Root level="debug">
+        <Root level="DEBUG">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="FILE"/>
         </Root>

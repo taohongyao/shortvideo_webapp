@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="csye6220@csye6220.cescutkteuwz.us-east-1.rds.amazonaws.com">
+<dataSource name="csye6220_db@csye6220.cescutkteuwz.us-east-1.rds.amazonaws.com">
   <database-model serializer="dbm" dbms="MYSQL" family-id="MYSQL" format-version="4.21">
     <root id="1">
       <ServerVersion>8.0.20</ServerVersion>
@@ -68,10 +68,10 @@
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
     <schema id="3" parent="1" name="csye6220">
-      <Current>1</Current>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
-    <schema id="4" parent="1" name="csye6225_db">
+    <schema id="4" parent="1" name="csye6220_db">
+      <Current>1</Current>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
     <schema id="5" parent="1" name="csye6225db">
@@ -972,237 +972,514 @@
     <table id="292" parent="3" name="product_image_info"/>
     <table id="293" parent="3" name="product_type"/>
     <table id="294" parent="3" name="user_account"/>
-    <column id="295" parent="288" name="SERIES">
+    <table id="295" parent="4" name="authorization"/>
+    <table id="296" parent="4" name="comment_table"/>
+    <table id="297" parent="4" name="short_video_table"/>
+    <table id="298" parent="4" name="user_account_table"/>
+    <table id="299" parent="5" name="book_file"/>
+    <table id="300" parent="5" name="book_info"/>
+    <table id="301" parent="5" name="book_info_book_images"/>
+    <table id="302" parent="5" name="user_info"/>
+    <column id="303" parent="288" name="SERIES">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="296" parent="288" name="LAST_USED">
+    <column id="304" parent="288" name="LAST_USED">
       <Position>2</Position>
       <DataType>datetime(6)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="297" parent="288" name="TOKEN">
+    <column id="305" parent="288" name="TOKEN">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="298" parent="288" name="USERNAME">
+    <column id="306" parent="288" name="USERNAME">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="299" parent="288" name="PRIMARY">
+    <key id="307" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>SERIES</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="300" parent="289" name="order_product">
+    <column id="308" parent="289" name="order_product">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="301" parent="289" name="quantity">
+    <column id="309" parent="289" name="quantity">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="302" parent="289" name="order_id">
+    <column id="310" parent="289" name="order_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="303" parent="289" name="product_id">
+    <column id="311" parent="289" name="product_id">
       <Position>4</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="304" parent="289" name="FKp9qp59hyy3jry2n6c0ikfmq7b">
+    <index id="312" parent="289" name="FKp9qp59hyy3jry2n6c0ikfmq7b">
       <ColNames>order_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="305" parent="289" name="FKhnfgqyjx3i80qoymrssls3kno">
+    <index id="313" parent="289" name="FKhnfgqyjx3i80qoymrssls3kno">
       <ColNames>product_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="306" parent="289" name="PRIMARY">
+    <key id="314" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_product</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="307" parent="289" name="FKp9qp59hyy3jry2n6c0ikfmq7b">
+    <foreign-key id="315" parent="289" name="FKp9qp59hyy3jry2n6c0ikfmq7b">
       <ColNames>order_id</ColNames>
       <RefTableName>order_table</RefTableName>
       <RefColNames>order_id</RefColNames>
     </foreign-key>
-    <foreign-key id="308" parent="289" name="FKhnfgqyjx3i80qoymrssls3kno">
+    <foreign-key id="316" parent="289" name="FKhnfgqyjx3i80qoymrssls3kno">
       <ColNames>product_id</ColNames>
       <RefTableName>product</RefTableName>
       <RefColNames>product_id</RefColNames>
     </foreign-key>
-    <column id="309" parent="290" name="order_id">
+    <column id="317" parent="290" name="order_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="310" parent="290" name="modify_date">
+    <column id="318" parent="290" name="modify_date">
       <Position>2</Position>
       <DataType>datetime(6)|0s</DataType>
     </column>
-    <column id="311" parent="290" name="user_id">
+    <column id="319" parent="290" name="user_id">
       <Position>3</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="312" parent="290" name="FKlkh7oj8eg5il6ebsqntk6v5w7">
+    <index id="320" parent="290" name="FKlkh7oj8eg5il6ebsqntk6v5w7">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="313" parent="290" name="PRIMARY">
+    <key id="321" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>order_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="314" parent="290" name="FKlkh7oj8eg5il6ebsqntk6v5w7">
+    <foreign-key id="322" parent="290" name="FKlkh7oj8eg5il6ebsqntk6v5w7">
       <ColNames>user_id</ColNames>
       <RefTableName>user_account</RefTableName>
       <RefColNames>user_id</RefColNames>
     </foreign-key>
-    <column id="315" parent="291" name="product_id">
+    <column id="323" parent="291" name="product_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="316" parent="291" name="description">
+    <column id="324" parent="291" name="description">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="317" parent="291" name="modify_date">
+    <column id="325" parent="291" name="modify_date">
       <Position>3</Position>
       <DataType>datetime(6)|0s</DataType>
     </column>
-    <column id="318" parent="291" name="name">
+    <column id="326" parent="291" name="name">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="319" parent="291" name="price">
+    <column id="327" parent="291" name="price">
       <Position>5</Position>
       <DataType>decimal(19,2 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="320" parent="291" name="productType_type_id">
+    <column id="328" parent="291" name="productType_type_id">
       <Position>6</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="321" parent="291" name="FK2669vqcteak8886pyltg8jnrl">
+    <index id="329" parent="291" name="FK2669vqcteak8886pyltg8jnrl">
       <ColNames>productType_type_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="322" parent="291" name="PRIMARY">
+    <key id="330" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>product_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="323" parent="291" name="FK2669vqcteak8886pyltg8jnrl">
+    <foreign-key id="331" parent="291" name="FK2669vqcteak8886pyltg8jnrl">
       <ColNames>productType_type_id</ColNames>
       <RefTableName>product_type</RefTableName>
       <RefColNames>type_id</RefColNames>
     </foreign-key>
-    <column id="324" parent="292" name="product_id">
+    <column id="332" parent="292" name="product_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="325" parent="292" name="filename">
+    <column id="333" parent="292" name="filename">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="326" parent="292" name="modify_date">
+    <column id="334" parent="292" name="modify_date">
       <Position>3</Position>
       <DataType>datetime(6)|0s</DataType>
     </column>
-    <column id="327" parent="292" name="suffix">
+    <column id="335" parent="292" name="suffix">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <key id="328" parent="292" name="PRIMARY">
+    <key id="336" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>product_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="329" parent="292" name="FKo31fh4u5ea7ysmisffj144335">
+    <foreign-key id="337" parent="292" name="FKo31fh4u5ea7ysmisffj144335">
       <ColNames>product_id</ColNames>
       <RefTableName>product</RefTableName>
       <RefColNames>product_id</RefColNames>
     </foreign-key>
-    <column id="330" parent="293" name="type_id">
+    <column id="338" parent="293" name="type_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="331" parent="293" name="type_description">
+    <column id="339" parent="293" name="type_description">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="332" parent="293" name="type_name">
+    <column id="340" parent="293" name="type_name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="333" parent="293" name="PRIMARY">
+    <key id="341" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>type_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="334" parent="294" name="user_id">
+    <column id="342" parent="294" name="user_id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="335" parent="294" name="authority">
+    <column id="343" parent="294" name="authority">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="336" parent="294" name="display_name">
+    <column id="344" parent="294" name="display_name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="337" parent="294" name="modify_date">
+    <column id="345" parent="294" name="modify_date">
       <Position>4</Position>
       <DataType>datetime(6)|0s</DataType>
     </column>
-    <column id="338" parent="294" name="password">
+    <column id="346" parent="294" name="password">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="294" name="username">
+    <column id="347" parent="294" name="username">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="340" parent="294" name="UK_castjbvpeeus0r8lbpehiu0e4">
+    <index id="348" parent="294" name="UK_castjbvpeeus0r8lbpehiu0e4">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="341" parent="294" name="PRIMARY">
+    <key id="349" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="342" parent="294" name="UK_castjbvpeeus0r8lbpehiu0e4">
+    <key id="350" parent="294" name="UK_castjbvpeeus0r8lbpehiu0e4">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>UK_castjbvpeeus0r8lbpehiu0e4</UnderlyingIndexName>
+    </key>
+    <column id="351" parent="295" name="SERIES">
+      <Position>1</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="352" parent="295" name="LAST_USED">
+      <Position>2</Position>
+      <DataType>datetime(6)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="353" parent="295" name="TOKEN">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="354" parent="295" name="USERNAME">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="355" parent="295" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>SERIES</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="356" parent="296" name="comment_id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="357" parent="296" name="context">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="358" parent="296" name="user_id">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="359" parent="296" name="short_video_id">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="360" parent="296" name="FKfulbsk2amklg7kkrpju41f3bd">
+      <ColNames>user_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="361" parent="296" name="FKjtj4cp5npre1n8hqqweency9l">
+      <ColNames>short_video_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="362" parent="296" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>comment_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="363" parent="296" name="FKfulbsk2amklg7kkrpju41f3bd">
+      <ColNames>user_id</ColNames>
+      <RefTableName>user_account_table</RefTableName>
+      <RefColNames>user_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="364" parent="296" name="FKjtj4cp5npre1n8hqqweency9l">
+      <ColNames>short_video_id</ColNames>
+      <RefTableName>short_video_table</RefTableName>
+      <RefColNames>video_id</RefColNames>
+    </foreign-key>
+    <column id="365" parent="297" name="video_id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="366" parent="297" name="upload_date">
+      <Position>2</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="367" parent="297" name="user_id">
+      <Position>3</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="368" parent="297" name="FKdeq7txis8fexx40douofbhybu">
+      <ColNames>user_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="369" parent="297" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>video_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="370" parent="297" name="FKdeq7txis8fexx40douofbhybu">
+      <ColNames>user_id</ColNames>
+      <RefTableName>user_account_table</RefTableName>
+      <RefColNames>user_id</RefColNames>
+    </foreign-key>
+    <column id="371" parent="298" name="user_id">
+      <Position>1</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="372" parent="298" name="authority">
+      <Position>2</Position>
+      <DataType>int|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="373" parent="298" name="display_name">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="374" parent="298" name="modify_date">
+      <Position>4</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="375" parent="298" name="password">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="376" parent="298" name="username">
+      <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="377" parent="298" name="UK_k9qlh7e890dxgrcx35tvfvwv7">
+      <ColNames>username</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="378" parent="298" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>user_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="379" parent="298" name="UK_k9qlh7e890dxgrcx35tvfvwv7">
+      <ColNames>username</ColNames>
+      <UnderlyingIndexName>UK_k9qlh7e890dxgrcx35tvfvwv7</UnderlyingIndexName>
+    </key>
+    <column id="380" parent="299" name="file_id">
+      <Position>1</Position>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="381" parent="299" name="created_date">
+      <Position>2</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="382" parent="299" name="file_name">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="383" parent="299" name="s3_object_name">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="384" parent="299" name="user_id">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <key id="385" parent="299" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>file_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="386" parent="300" name="id">
+      <Position>1</Position>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="387" parent="300" name="author">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="388" parent="300" name="book_created">
+      <Position>3</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="389" parent="300" name="isbn">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="390" parent="300" name="published_date">
+      <Position>5</Position>
+      <DataType>date|0s</DataType>
+    </column>
+    <column id="391" parent="300" name="title">
+      <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="392" parent="300" name="user_id">
+      <Position>7</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <key id="393" parent="300" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="394" parent="301" name="book_entity_id">
+      <Position>1</Position>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="395" parent="301" name="book_images_file_id">
+      <Position>2</Position>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="396" parent="301" name="UK_hf5xlccin133m6he5wfbfu51c">
+      <ColNames>book_images_file_id</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="397" parent="301" name="FKrv8ebohbktvphx1k8g9qhvlbw">
+      <ColNames>book_entity_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="398" parent="301" name="UK_hf5xlccin133m6he5wfbfu51c">
+      <ColNames>book_images_file_id</ColNames>
+      <UnderlyingIndexName>UK_hf5xlccin133m6he5wfbfu51c</UnderlyingIndexName>
+    </key>
+    <foreign-key id="399" parent="301" name="FKrv8ebohbktvphx1k8g9qhvlbw">
+      <ColNames>book_entity_id</ColNames>
+      <RefTableName>book_info</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="400" parent="301" name="FK1kq4ivmc3swyk9c4ju9ocetx7">
+      <ColNames>book_images_file_id</ColNames>
+      <RefTableName>book_file</RefTableName>
+      <RefColNames>file_id</RefColNames>
+    </foreign-key>
+    <column id="401" parent="302" name="uuid">
+      <Position>1</Position>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="402" parent="302" name="account_created">
+      <Position>2</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="403" parent="302" name="account_updated">
+      <Position>3</Position>
+      <DataType>datetime(6)|0s</DataType>
+    </column>
+    <column id="404" parent="302" name="first_name">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="405" parent="302" name="last_name">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="406" parent="302" name="password_bcrypt">
+      <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="407" parent="302" name="username">
+      <Position>7</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <key id="408" parent="302" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>uuid</ColNames>
+      <Primary>1</Primary>
     </key>
   </database-model>
 </dataSource>

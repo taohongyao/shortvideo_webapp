@@ -62,8 +62,10 @@ public class HibernateConfig {
     @Bean
     public Properties getHibernateProperties(){
         Properties properties = new Properties();
+
         properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
         logger.debug("DB_ENDPOINT:{}",db_endpoint);
+        logger.debug("JAVA_HOME:{}",System.getenv());
         properties.put(Environment.URL,"jdbc:mysql://"+db_endpoint+"/"+db_database+"?createDatabaseIfNotExist=true");
         logger.debug("DB_UserName:{}",db_username);
         properties.put(Environment.USER,db_username);

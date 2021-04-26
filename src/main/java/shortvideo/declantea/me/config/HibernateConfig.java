@@ -63,6 +63,8 @@ public class HibernateConfig {
         Properties properties = new Properties();
         properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
         properties.put(Environment.URL,"jdbc:mysql://"+System.getenv("DB_ENDPOINT")+"/"+System.getenv("DB_DATABASE")+"?createDatabaseIfNotExist=true");
+        logger.debug("DB_UserName:{}",System.getenv("DB_USERNAME"));
+        logger.debug("DB_UserName:{}",Environment.USER);
         properties.put(Environment.USER,System.getenv("DB_USERNAME"));
         properties.put(Environment.PASS,System.getenv("DB_PASSWORD"));
         properties.put("show_sql",true);

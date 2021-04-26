@@ -8,9 +8,9 @@
       "files": {
         "collect_list": [
           {
-            "file_path": "/var/lib/tomcat9/logs_app/short_video_app.log",
-            "log_group_name": "csye6225",
-            "log_stream_name": "webapp"
+            "file_path": "/var/lib/tomcat9/logs/short_video_app.log",
+            "log_group_name": "declantea.me",
+            "log_stream_name": "short.video.webapp"
           }
         ]
       }

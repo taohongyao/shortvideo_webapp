@@ -5,6 +5,7 @@ import org.hibernate.cfg.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,18 @@ import java.util.Properties;
 public class HibernateConfig {
 
     private ApplicationContext context;
+
+    @Value("${DB_ENDPOINT}")
+    private String db_endpoint;
+
+    @Value("${DB_DATABASE}")
+    private String db_database;
+
+    @Value("${DB_USERNAME}")
+    private String db_username;
+
+    @Value("${DB_PASSWORD}")
+    private String db_password;
 
     private static final Logger logger= LoggerFactory.getLogger(HibernateConfig.class);
 
@@ -41,17 +54,6 @@ public class HibernateConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://"+System.getenv("DB_ENDPOINT")+"/"+System.getenv("DB_DATABASE"));
-        dataSource.setUsername(System.getenv("DB_USERNAME"));
-        dataSource.setPassword(System.getenv("DB_PASSWORD"));
-        return dataSource;
-    }
-
-
-    @Bean
     public HibernateTransactionManager getTransactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(getSessionFactory().getObject());
@@ -62,12 +64,11 @@ public class HibernateConfig {
     public Properties getHibernateProperties(){
         Properties properties = new Properties();
         properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
-        logger.debug("DB_ENDPOINT:{}",System.getenv("DB_ENDPOINT"));
-        properties.put(Environment.URL,"jdbc:mysql://"+System.getenv("DB_ENDPOINT")+"/"+System.getenv("DB_DATABASE")+"?createDatabaseIfNotExist=true");
-        logger.debug("DB_UserName:{}",System.getenv("DB_USERNAME"));
-        logger.debug("DB_UserName:{}",Environment.USER);
-        properties.put(Environment.USER,System.getenv("DB_USERNAME"));
-        properties.put(Environment.PASS,System.getenv("DB_PASSWORD"));
+        logger.debug("DB_ENDPOINT:{}",db_endpoint);
+        properties.put(Environment.URL,"jdbc:mysql://"+db_endpoint+"/"+db_database+"?createDatabaseIfNotExist=true");
+        logger.debug("DB_UserName:{}",db_username);
+        properties.put(Environment.USER,db_username);
+        properties.put(Environment.PASS,db_password);
         properties.put("show_sql",true);
         properties.put("hibernate.dialect","org.hibernate.dialect.MySQL8Dialect");
         properties.put("hibernate.connection.autocommit",true);

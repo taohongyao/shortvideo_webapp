@@ -36,7 +36,7 @@ public class HibernateConfig {
         sessionFactory.setConfigLocation(context.getResource("classpath:hibernate-cfg/hibernate.cfg.xml"));
 //        sessionFactory.setHibernateProperties(getHibernateProperties());
 //        sessionFactory.setDataSource(dataSource());
-//        logger.debug(sessionFactory.getHibernateProperties().toString());
+        logger.debug("ENV:{}",System.getenv());
         sessionFactory.setPackagesToScan("shortvideo.declantea.me.entity");
         return sessionFactory;
     }

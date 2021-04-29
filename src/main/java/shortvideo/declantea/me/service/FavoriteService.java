@@ -10,14 +10,24 @@ import java.util.UUID;
 public interface FavoriteService {
 
     Favorite saveFavorite(FavoriteInfo favoriteInfo);
-    Favorite saveFavorite(UUID videoId, String userId);
+    Favorite saveFavorite(String videoId, long userId);
+
+    Favorite saveFavorite(String videoId, String userName);
+
+    Favorite getFavoriteByVideoIdAndUserId(String videoId, long userId);
+
+    Favorite getFavoriteByVideoIdAndUserName(String videoId, String userName);
 
     Favorite cancelFavorite(FavoriteInfo favoriteInfo);
-    Favorite cancelFavorite(UUID videoId, String userId);
+    Favorite cancelFavorite(String videoId, long userId);
 
     List<Favorite> getFavoritesByUserId(long userId);
 
-    long getFavoriteCounter(UUID videoId);
+    Favorite cancelFavorite(String videoId, String userName);
+
+    FavoriteInfo convertFavorite2FavoriteInfo(Favorite favorite);
+
+    long getFavoriteCounter(String videoId);
     long getFavoriteCounter(ShortVideo shortVideo);
 
 }

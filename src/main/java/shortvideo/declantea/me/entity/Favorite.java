@@ -12,7 +12,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "favorite_table")
+
+@Table(name = "favorite_table", uniqueConstraints=
+@UniqueConstraint(columnNames={"short_video_id", "user_id"}))
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,13 +25,13 @@ public class Favorite implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favorite_id", nullable = false, updatable = false)
-    private long favoriteId;
+    private Long favoriteId;
 
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "short_video_id")
     private ShortVideo shortVideo;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private UserAccount favoriteUser;
 

@@ -61,6 +61,8 @@ public class VideoServiceImpl implements VideoService {
         }
     }
 
+
+
     @Autowired
     private ShortVideoDAO shortVideoDAO;
 
@@ -104,6 +106,30 @@ public class VideoServiceImpl implements VideoService {
         logger.debug("Count: "+commentService.getCommentCounterByVideoId(shortVideo));
         return shortVideoDAO.create(shortVideo);
 
+    }
+
+    @Override
+    public ShortVideo updateVideo(VideoInfo videoInfo, String uuid) throws IOException {
+        CommonsMultipartFile videoFile=videoInfo.getVideoFile();
+        CommonsMultipartFile coverFIle=videoInfo.getVideoCoverFile();
+        String videoFileSuffix = Objects.requireNonNull(videoFile.getOriginalFilename()).substring(videoFile.getOriginalFilename().lastIndexOf("."));
+        String coverFIleSuffix = Objects.requireNonNull(coverFIle.getOriginalFilename()).substring(coverFIle.getOriginalFilename().lastIndexOf("."));
+
+        String fileUUID= UUID.randomUUID().toString();
+        String videoFileName=fileUUID+videoFileSuffix;
+        String videoCoverName=fileUUID+coverFIleSuffix;
+
+        saveMultipartToFile(videoFile,videoFileName,userVideoFolderPath);
+        saveMultipartToFile(coverFIle,videoCoverName,userVideoCoverFolderPath);
+        ShortVideo shortVideo=shortVideoDAO.findOne(uuid);
+
+        shortVideo.setVideoState(VideoStateEnum.Approve)
+                .setVideoTitle(videoInfo.getVideoTitle())
+                .setVideoDescription(videoInfo.getVideoDescription())
+                .setVideoCoverPath(videoCoverName)
+                .setVideoPath(videoFileName);
+
+        return shortVideo;
     }
 
     @Override
@@ -168,6 +194,7 @@ public class VideoServiceImpl implements VideoService {
         return shortVideoDAO.findOne(videoId);
     }
 
+
     @Override
     public List<ShortVideo> getAllApprovedVideosByKeyword(String keyword){
         return shortVideoDAO.findAllApprovedShortVideoListByKeyword(keyword);
@@ -175,6 +202,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<ShortVideo> getAllApprovedVideos() {
+        logger.debug(shortVideoDAO.findAllApproveShortVideo().toString());
         return shortVideoDAO.findAllApproveShortVideo();
     }
 

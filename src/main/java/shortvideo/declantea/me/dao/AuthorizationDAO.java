@@ -12,7 +12,7 @@ import shortvideo.declantea.me.entity.Authorization;
 import java.util.Date;
 
 @Repository
-public class AuthorizationDAO extends AbstractHibernateDao<Authorization> implements PersistentTokenRepository {
+public class AuthorizationDAO extends AbstractHibernateDao<Authorization, String> implements PersistentTokenRepository {
 
     public Authorization findByUsername(String username) {
         Session session = this.getCurrentSession();

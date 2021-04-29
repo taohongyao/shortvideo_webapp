@@ -22,7 +22,7 @@ public class VideoOperation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "video_operation_id", nullable = false, updatable = false)
-    private long commentId;
+    private Long commentId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "short_video_id")
@@ -40,6 +40,9 @@ public class VideoOperation implements Serializable {
 
     @Column(name = "history_video_path", nullable = false)
     private String videoPath;
+
+    @Column(name = "history_video_cover_path", nullable = false)
+    private String videoCoverPath;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

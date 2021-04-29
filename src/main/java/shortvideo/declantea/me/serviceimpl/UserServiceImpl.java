@@ -3,6 +3,8 @@ package shortvideo.declantea.me.serviceimpl;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shortvideo.declantea.me.dao.UserAccountDAO;
@@ -10,7 +12,8 @@ import shortvideo.declantea.me.entity.UserAccount;
 import shortvideo.declantea.me.exception.NoSuchUsername;
 import shortvideo.declantea.me.exception.UsernameAlreadyExistException;
 import shortvideo.declantea.me.model.UserAccountInfo;
-import shortvideo.declantea.me.security.authority.AuthorityEnum;
+import shortvideo.declantea.me.Enum.AuthorityEnum;
+import shortvideo.declantea.me.model.UserInfo;
 import shortvideo.declantea.me.service.UserService;
 
 import java.util.List;
@@ -24,6 +27,15 @@ public class UserServiceImpl implements UserService {
 
     private UserAccountDAO userAccountDAO;
 
+    private PasswordEncoder passwordEncoder;
+
+
+
+    @Autowired
+    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @Autowired
     public void setUserAccountDAO(UserAccountDAO userAccountDAO) {
         this.userAccountDAO = userAccountDAO;
@@ -36,11 +48,17 @@ public class UserServiceImpl implements UserService {
         return this.getUserAccountDAO().create(userAccount);
     }
 
+    @Override
+    public UserInfo convertUserAccount2UserInfo(UserAccount userAccount){
+        return new UserInfo().setUserID(userAccount.getUserID())
+                .setUsername(userAccount.getUsername())
+                .setDisplayName(userAccount.getDisplayName());
+    }
 
     @Override
     public UserAccount registerCustomer(UserAccountInfo userAccountInfo) {
         UserAccount userAccount = new UserAccount().setUsername(userAccountInfo.getUsername())
-                .setPassword(userAccountInfo.getPassword())
+                .setPassword(passwordEncoder.encode(userAccountInfo.getPassword()))
                 .setDisplayName(userAccountInfo.getDisplayName()).setAuthority(AuthorityEnum.Customer);
         return register(userAccount);
     }

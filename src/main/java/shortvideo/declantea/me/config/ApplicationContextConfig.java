@@ -1,5 +1,7 @@
 package shortvideo.declantea.me.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -26,6 +28,8 @@ public class ApplicationContextConfig implements WebMvcConfigurer {
 
     @Autowired
     private Environment env;
+
+    private static Logger logger= LoggerFactory.getLogger(ApplicationContextConfig.class);
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -60,8 +64,9 @@ public class ApplicationContextConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
+    @Bean(name = "bcryptEncoder")
     public BCryptPasswordEncoder getPasswordEncoder() {
+        logger.debug("Bcrypt Password Encoder created");
         return new BCryptPasswordEncoder();
     }
 

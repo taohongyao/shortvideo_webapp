@@ -23,7 +23,7 @@ public class CommentOperation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_operation_id", nullable = false, updatable = false)
-    private long commentId;
+    private Long commentId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "comment_id")

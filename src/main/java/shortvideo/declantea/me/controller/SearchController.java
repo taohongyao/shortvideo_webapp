@@ -33,4 +33,12 @@ public class SearchController {
                 .map(T->videoService.convertShortVideo2VideoInfo(T)).collect(Collectors.toList());
         return list;
     }
+
+    @PostMapping(value = "/videos_list")
+    @ResponseBody
+    public Object getSearchVideoList2(@RequestParam(name = "keyword") String keyWord) {
+        List<VideoInfo> list=videoService.getAllApprovedVideosByKeyword(keyWord).stream()
+                .map(T->videoService.convertShortVideo2VideoInfo(T)).collect(Collectors.toList());
+        return list;
+    }
 }

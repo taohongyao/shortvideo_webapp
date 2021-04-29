@@ -27,14 +27,14 @@
 
 <body>
 <jsp:include page="_header.jsp"/>
-<form:form action="upload" method="post" modelAttribute="videoinfoform" enctype="multipart/form-data">
-    <input id="short_video_id" name="short_video_id" type="hidden" value="${videoinfoform.videoId}">
+<form:form action="upload" method="post" modelAttribute="videoInfo" enctype="multipart/form-data">
+    <input id="short_video_id" name="short_video_id" type="hidden" value="${videoInfo.videoId}">
     <input id="isimagechanged" name="isimagechanged" type="hidden" value="false"/>
     <table style="text-align: left">
         <tr>
             <td>Title</td>
-            <td><input id="name" type="text" name="videoTitle" value="${VideoInfo.videoTitle}"/> <form:errors
-                    path="name" cssClass="valid-error"/></td>
+            <td><input id="name" type="text" name="videoTitle" value="${videoInfo.videoTitle}"/> <form:errors
+                    path="videoTitle" cssClass="valid-error"/></td>
             <td><p id="nameerror"></p></td>
 
         </tr>
@@ -48,18 +48,18 @@
             <td>Video Cover</td>
             <td><input type="file" accept="image/*" name="videoCoverFile" multiple="multiple"
                        id="imgFile"><form:errors
-                    path="imgFile" cssClass="valid-error"/></td>
+                    path="videoCoverFile" cssClass="valid-error"/></td>
         </tr>
         <tr>
             <td>Video File</td>
             <td><input type="file" accept="video/*" name="videoFile" multiple="multiple"
                        id="imgFile"><form:errors
-                    path="imgFile" cssClass="valid-error"/></td>
+                    path="videoFile" cssClass="valid-error"/></td>
         </tr>
         <tr>
             <td>Description</td>
-            <td><textarea id="videoDescription" rows="8" name="videoDescription">${VideoInfo.videoDescription}</textarea><form:errors
-                    path="description" cssClass="valid-error"/></td>
+            <td><textarea id="videoDescription" rows="8" name="videoDescription">${videoInfo.videoDescription}</textarea><form:errors
+                    path="videoDescription" cssClass="valid-error"/></td>
             <td><p id="videoDescription"></p></td>
         </tr>
         <tr>

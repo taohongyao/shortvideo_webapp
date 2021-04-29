@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserInfo {
-    private long userID;
+    private Long userID;
     private String username;
     private String displayName;
 }

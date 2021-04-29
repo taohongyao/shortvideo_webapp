@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="connection.url">jdbc:mysql://${DB_ENDPOINT}/${DB_DATABASE}?useSSL=false</property>
+        <property name="connection.url">jdbc:mysql://${DB_ENDPOINT}/${DB_DATABASE}</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.username">${DB_USERNAME}</property>
         <property name="hibernate.connection.password">${DB_PASSWORD}</property>
@@ -19,6 +19,6 @@
         <property name="hibernate.c3p0.max_statements">150</property>
 
         <!-- DB schema will be updated if needed -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
     </session-factory>
 </hibernate-configuration>

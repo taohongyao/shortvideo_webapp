@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -12,6 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteInfo {
+    private boolean favorite;
     private long userId;
-    private UUID shortVideoId;
+    @NotNull
+    private String shortVideoId;
+    private VideoInfo videoInfo;
 }

@@ -14,9 +14,34 @@ public class FavoriteDAO extends AbstractHibernateDao<Favorite,Long>{
 
     public List<Favorite> getFavoriteListByUserId(long userId){
         Session session=this.getCurrentSession();
-        Criteria crit=session.createCriteria(Favorite.class);
-        crit.add(Restrictions.eq("favoriteUser",userId));
-        return crit.list();
+        Query query=session.createQuery("From Favorite f where f.favoriteUser=:user");
+        query.setParameter("user",userId);
+        return query.list();
+    }
+
+    public List<Favorite> getFavoriteListByVideoId(String videoId){
+        Session session=this.getCurrentSession();
+        Query query=session.createQuery("From Favorite f where f.shortVideo=:shortVideo");
+        query.setParameter("shortVideo",videoId);
+        return query.list();
+    }
+
+    public Favorite getFavoriteListByVideoIdAndUserId(String videoId,long userId){
+        Session session=this.getCurrentSession();
+        Query query=session.createQuery("From Favorite f where f.shortVideo.videoId=:shortVideo and f.favoriteUser.userID=:user");
+        query.setParameter("shortVideo",videoId);
+        query.setParameter("user",userId);
+        return (Favorite) query.uniqueResult();
+    }
+
+    public Favorite deleteFavoriteByVideoIdAndUserId(String videoId,long userId){
+        Session session=this.getCurrentSession();
+        Query query=session.createQuery("From Favorite f where f.shortVideo.videoId=:shortVideo and f.favoriteUser.userID=:user");
+        query.setParameter("shortVideo",videoId);
+        query.setParameter("user",userId);
+        Favorite favorite= (Favorite) query.uniqueResult();
+        session.delete(favorite);
+        return favorite;
     }
 
     public long getFavoriteCountByVideoId(String videoId){

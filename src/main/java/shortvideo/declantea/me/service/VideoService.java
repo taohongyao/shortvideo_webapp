@@ -12,6 +12,7 @@ public interface VideoService {
 
     VideoInfo convertShortVideo2VideoInfo(ShortVideo shortVideo);
     ShortVideo saveVideo(VideoInfo videoInfo) throws IOException;
+    ShortVideo updateVideo(VideoInfo videoInfo, String uuid) throws IOException;
 
     byte[] loadImgFromFile(String filePath) throws IOException;
 

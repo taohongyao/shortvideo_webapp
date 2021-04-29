@@ -20,6 +20,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
+
     public List findAllApprovedShortVideoListByKeyword(String keyword){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.videoTitle like :keyWord and shortvideo.videoState=:videoState");
@@ -62,38 +63,38 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
 
     public List findAllNotDeletedShortVideo(){
         Session session = this.getCurrentSession();
-        Criteria crit = session.createCriteria(ShortVideo.class);
-        crit.add(Restrictions.ne("videoState", VideoStateEnum.Delete));
-        return crit.list();
+        Query query=session.createQuery("From ShortVideo s where s.videoState!=:state");
+        query.setParameter("state",VideoStateEnum.Delete);
+        return query.list();
     }
 
 
     public List findAllApproveShortVideo(){
         Session session = this.getCurrentSession();
-        Criteria crit = session.createCriteria(ShortVideo.class);
-        crit.add(Restrictions.eq("videoState", VideoStateEnum.Approve));
-        return crit.list();
+        Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
+        query.setParameter("state",VideoStateEnum.Approve);
+        return query.list();
     }
 
     public List findAllNotApproveShortVideo(){
         Session session = this.getCurrentSession();
-        Criteria crit = session.createCriteria(ShortVideo.class);
-        crit.add(Restrictions.eq("videoState", VideoStateEnum.NotApprove));
-        return crit.list();
+        Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
+        query.setParameter("state",VideoStateEnum.NotApprove);
+        return query.list();
     }
 
     public List findAllPendingShortVideo(){
         Session session = this.getCurrentSession();
-        Criteria crit = session.createCriteria(ShortVideo.class);
-        crit.add(Restrictions.eq("videoState", VideoStateEnum.Pending));
-        return crit.list();
+        Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
+        query.setParameter("state",VideoStateEnum.Pending);
+        return query.list();
     }
 
     public List findAllDeletedShortVideo(){
         Session session = this.getCurrentSession();
-        Criteria crit = session.createCriteria(ShortVideo.class);
-        crit.add(Restrictions.eq("videoState", VideoStateEnum.Delete));
-        return crit.list();
+        Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
+        query.setParameter("state",VideoStateEnum.Delete);
+        return query.list();
     }
 
     public ShortVideo makeVideoDeleteState(String videoId){

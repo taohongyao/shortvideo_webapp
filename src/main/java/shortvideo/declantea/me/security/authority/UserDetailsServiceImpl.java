@@ -21,28 +21,22 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private UserAccountDAO userAccountDAO;
-    private BCryptPasswordEncoder passwordEncoder;
-
     @Autowired
     public void setUserDAO(UserAccountDAO userAccountDAO) {
         this.userAccountDAO = userAccountDAO;
     }
 
-    @Autowired
-    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        BCryptPasswordEncoder encoder = passwordEncoder;
         UserAccount userAccount = Optional.ofNullable(this.userAccountDAO.findByUsername(username))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not exist"));
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 //        System.out.println(userAccount);
         grantedAuthorityList.add(userAccount.getAuthority());
-        User user = new User(userAccount.getUsername(), encoder.encode(userAccount.getPassword()), grantedAuthorityList);
+        User user = new User(userAccount.getUsername(), userAccount.getPassword(), grantedAuthorityList);
 //        System.out.println(user);
         return user;
     }

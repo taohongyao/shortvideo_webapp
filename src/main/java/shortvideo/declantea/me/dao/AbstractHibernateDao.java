@@ -12,7 +12,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 
-public abstract class AbstractHibernateDao<T extends Serializable> {
+public abstract class AbstractHibernateDao<T extends Serializable, K extends Serializable> {
 
     private final Class<T> tClass;
 
@@ -23,7 +23,7 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
         this.tClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public T findOne(int id) {
+    public T findOne(K id) {
         return getCurrentSession().get(tClass, id);
     }
 
@@ -43,10 +43,9 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
 
     public void delete(T entity) {
         getCurrentSession().delete(entity);
-
     }
 
-    public void deleteById(int entityId) {
+    public void deleteById(K entityId) {
         T entity = findOne(entityId);
         delete(entity);
 

@@ -3,12 +3,15 @@ package shortvideo.declantea.me.service;
 
 import shortvideo.declantea.me.entity.UserAccount;
 import shortvideo.declantea.me.model.UserAccountInfo;
-import shortvideo.declantea.me.security.authority.AuthorityEnum;
+import shortvideo.declantea.me.Enum.AuthorityEnum;
+import shortvideo.declantea.me.model.UserInfo;
 
 import java.util.List;
 
 public interface UserService {
     UserAccount register(UserAccount userAccount);
+
+    UserInfo convertUserAccount2UserInfo(UserAccount userAccount);
 
     UserAccount registerCustomer(UserAccountInfo userAccountInfo);
 

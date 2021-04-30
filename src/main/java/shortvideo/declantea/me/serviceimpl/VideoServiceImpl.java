@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import shortvideo.declantea.me.Enum.VideoStateEnum;
 import shortvideo.declantea.me.dao.ShortVideoDAO;
 import shortvideo.declantea.me.entity.Favorite;
@@ -23,10 +25,7 @@ import shortvideo.declantea.me.service.FavoriteService;
 import shortvideo.declantea.me.service.UserService;
 import shortvideo.declantea.me.service.VideoService;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -112,22 +111,26 @@ public class VideoServiceImpl implements VideoService {
     public ShortVideo updateVideo(VideoInfo videoInfo, String uuid) throws IOException {
         CommonsMultipartFile videoFile=videoInfo.getVideoFile();
         CommonsMultipartFile coverFIle=videoInfo.getVideoCoverFile();
-        String videoFileSuffix = Objects.requireNonNull(videoFile.getOriginalFilename()).substring(videoFile.getOriginalFilename().lastIndexOf("."));
-        String coverFIleSuffix = Objects.requireNonNull(coverFIle.getOriginalFilename()).substring(coverFIle.getOriginalFilename().lastIndexOf("."));
-
         String fileUUID= UUID.randomUUID().toString();
-        String videoFileName=fileUUID+videoFileSuffix;
-        String videoCoverName=fileUUID+coverFIleSuffix;
-
-        saveMultipartToFile(videoFile,videoFileName,userVideoFolderPath);
-        saveMultipartToFile(coverFIle,videoCoverName,userVideoCoverFolderPath);
         ShortVideo shortVideo=shortVideoDAO.findOne(uuid);
 
         shortVideo.setVideoState(VideoStateEnum.Approve)
                 .setVideoTitle(videoInfo.getVideoTitle())
-                .setVideoDescription(videoInfo.getVideoDescription())
-                .setVideoCoverPath(videoCoverName)
-                .setVideoPath(videoFileName);
+                .setVideoDescription(videoInfo.getVideoDescription());
+
+
+        if(videoFile.getBytes().length!=0){
+            String videoFileSuffix = Objects.requireNonNull(videoFile.getOriginalFilename()).substring(videoFile.getOriginalFilename().lastIndexOf("."));
+            String videoFileName=fileUUID+videoFileSuffix;
+            saveMultipartToFile(videoFile,videoFileName,userVideoFolderPath);
+            shortVideo.setVideoPath(videoFileName);
+        }
+        if(coverFIle.getBytes().length!=0){
+            String coverFIleSuffix = Objects.requireNonNull(coverFIle.getOriginalFilename()).substring(coverFIle.getOriginalFilename().lastIndexOf("."));
+            String videoCoverName=fileUUID+coverFIleSuffix;
+            saveMultipartToFile(coverFIle,videoCoverName,userVideoCoverFolderPath);
+            shortVideo.setVideoCoverPath(videoCoverName);
+        }
 
         return shortVideo;
     }
@@ -178,6 +181,47 @@ public class VideoServiceImpl implements VideoService {
             return IOUtils.toByteArray(imgNotFound);
         }
     }
+
+    @Override
+    public StreamingResponseBody getStreamResponseBody(String videoUUID){
+            ShortVideo shortVideo = getShortVideoByVideoId(videoUUID);
+            Path path = Paths.get(userVideoFolderPath, shortVideo.getVideoPath());
+            return out -> {
+                try {
+                    final InputStream inputStream = new FileInputStream(path.toFile());
+
+                    byte[] bytes = new byte[1024];
+                    int length;
+                    while ((length = inputStream.read(bytes)) >= 0) {
+                        out.write(bytes, 0, length);
+                    }
+                    inputStream.close();
+                    out.flush();
+
+                } catch (final Exception e) {
+                    logger.error("Exception while reading and streaming data {} ", e);
+                }
+            };
+    }
+
+    @Override
+    public File getVideResourceFile(String videoUUID){
+        ShortVideo shortVideo = getShortVideoByVideoId(videoUUID);
+        Path path = Paths.get(userVideoFolderPath, shortVideo.getVideoPath());
+        return path.toFile();
+    }
+
+
+    private void readAndWrite(final InputStream is, OutputStream os)
+            throws IOException {
+        byte[] data = new byte[2048];
+        int read = 0;
+        while ((read = is.read(data)) > 0) {
+            os.write(data, 0, read);
+        }
+        os.flush();
+    }
+
 
     @Override
     public ShortVideo getShortVideo(ShortVideo shortVideo) {

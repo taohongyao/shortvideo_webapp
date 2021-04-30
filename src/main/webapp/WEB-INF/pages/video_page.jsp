@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: declan
-  Date: 4/28/2021
-  Time: 4:12 AM
+  Date: 4/30/2021
+  Time: 6:25 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -12,73 +12,89 @@
 <html>
 <head>
     <title>Video</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.7/plyr.css" />
+    <script src="https://cdn.plyr.io/3.6.7/plyr.js"></script>
 </head>
 <body>
 <jsp:include page="_header.jsp"/>
 
-<h2 id="video_title">${shortVideo.videoTitle}</h2>
-<video width="400" controls>
-    <source src="/video/${shortVideo.videoId}/file" type="video/mp4">
-    Your browser does not support HTML video.
-</video>
-<br>
-<i class="material-icons" id="i_favorite_${shortVideo.videoId}" style="color:black;cursor:pointer"> favorite_border </i>
-<br>
-<label><strong id="video_description" >Description:</strong></label>
-${shortVideo.videoDescription}
-<br>
-<label><strong>Creater:</strong></label>
-<a href="<spring:url value='/account/person/${shortVideo.userID}/'/>">${shortVideo.displayName}</a>
-<br>
-<label><strong>Create Date:</strong></label>
-${shortVideo.createDate}
-<br>
-<label id="favorite_counter"><strong>Favorite Number:</strong></label>
-${shortVideo.favoriteCounter}
-<br>
-<label><strong>Comments</strong></label>
-(<label id="comment_counter">0</label>)
-<c:choose>
+<div class="video_page_container">
 
-    <c:when test="${pageContext.request.userPrincipal.name != null}">
-            <table>
-                <tr>
-                    <td><label> User: ${pageContext.request.userPrincipal.name}</label></td>
-                </tr>
-                <tr>
-                    <td><textarea id="comment_text" rows="8" name="commentContext"></textarea></td>
-                </tr>
-                <tr>
-                    <td><button id="comment_btn">Comment</button></td>
-                </tr>
-            </table>
+    <div class="player_container">
+        <div class="player_video_title">
+            <h1>${shortVideo.videoTitle}</h1>
+        </div>
+        <div class="player_video_info">
+            <div class="player_video_info_item">
+                <i class="material-icons">favorite</i>
+                <lable>Favorite:${shortVideo.favoriteCounter} </lable>
+            </div>
+            <div class="player_video_info_item">
+                <i class="material-icons">comment</i>
+                <lable >Comment: <lable id="comment_counter">${shortVideo.commentCounter}</lable></lable>
+            </div>
 
-    </c:when>
-</c:choose>
+        </div>
+        <div class="player_outter">
+            <video id="player" class="player" >
+            </video>
+        </div>
+    </div>
 
-<div class="comment_div">
-    <div id="comments" class="comments_list">
+    <div class="cover_info">
+        <div class="cover_video_block">
+            <img class="cover_video_img" src="/video/${shortVideo.videoId}/cover">
+            <div class="cover_video_mid">
+                <div class="cover_video_description"> <label>${shortVideo.videoTitle}</label> </div>
+                <div class="video_info">
+                    <div class="video_title">${shortVideo.videoDescription}</div>
+                    <div class="video_info_bottom">
+
+                        <c:choose>
+                            <c:when test="${pageContext.request.userPrincipal.name != null}">
+
+                                <div class="video_info_i_label_tag">
+                                    <i class="material-icons">face</i>
+                                    <label>${pageContext.request.userPrincipal.name}</label>
+                                </div>
+
+                            </c:when>
+                        </c:choose>
+
+
+                    </div>
+                </div>
+                <div class="comment_panel">
+                    <div class="comment_area">
+                        <textarea id="comment_text" class="comment_send_text" style="width: 100%;" ></textarea>
+                    </div>
+                    <button id="comment_btn" class="comment_btn">Comment</button>
+                </div>
+            </div>
+        </div>
+
+        <!--		End-->
+    </div>
+    <div id="comments" class="comments">
+
     </div>
 </div>
-
-
-
-
 </body>
-
 <script>
-
     $(document).ready(() => {
 
-        $("#comment_btn").click({ajax_type:'POST'},restComment);
+
         refreshComments();
 
         let video_id="${shortVideo.videoId}";
         $("#i_favorite_"+video_id).click({video_id:video_id,ajax_type:'POST'},restFavorite)
         if(user_id!=undefined&&user_id!=null){
+            $("#comment_btn").click({ajax_type:'POST'},restComment);
             restFavorite(
                 jQuery.Event( "getInfo", {data:{ video_id:video_id,ajax_type:'GET' }} )
             );
+        }else {
+            $("#comment_btn").removeClass("comment_btn").addClass("comment_btn_not_login");
         }
     });
 
@@ -149,29 +165,58 @@ ${shortVideo.favoriteCounter}
 
             $.each(data['list'], (key, value) => {
                 $('<div/>', {
-                    'class':'comment',
+                    'class':'comment_item',
                     'id': 'comment_'.concat(value['commentId'])
                 }).appendTo("#comments");
 
-                $('<div/>', {
-                    'class':'comment_user',
-                    'id': 'user_'.concat(value['userID']),
-                    'html':"<strong>{user_display_name}: </strong>".replace("{user_display_name}",value['displayName'])
-                }).appendTo("#"+'comment_'.concat(value['commentId']));
+                div_info= $('<div/>', {
+                    'class':'comment_user_info_bar',
+                });
+                $('<i/>', {
+                    'class':'material-icons account_avt_i',
+                    'style':'font-size: 50px;',
+                    'html':'face'
+                }).appendTo(div_info);
+
+                $('<label/>', {
+                    'class':'comment_user_info_bar_lable',
+                    'html':value['displayName']
+                }).appendTo(div_info);
+
+                $('<label/>', {
+                    'class':'comment_user_info_bar_lable',
+                    'html':value['createDate']
+                }).appendTo(div_info);
+                if(value['userID']==user_id){
+                    $('<i/>', {
+                        'class':'material-icons delete_i',
+                        'html':'remove_circle'
+                    }).click({comment_id:value['commentId'],ajax_type:'DELETE'},restComment).appendTo(div_info);
+
+                }
+                div_info.appendTo('#comment_'.concat(value['commentId']));
 
                 $('<div/>', {
-                    'class':'content',
-                    'html':value['commentContext']
-                }).appendTo("#"+'comment_'.concat(value['commentId']));
-                if(value['userID']==user_id){
-                    $('<button/>', {
-                        'class':'delete_div',
-                        'html':'Delete'
-                    }).click({comment_id:value['commentId'],ajax_type:'DELETE'},restComment).appendTo("#"+'comment_'.concat(value['commentId']));
-                }
+                    'class':'comment_text',
+                    'html':'<span>{context}</span>'.replace("{context}",value['commentContext'])
+                }).appendTo('#comment_'.concat(value['commentId']));
 
             });
         }
     }
+
+    const player = new Plyr('#player');
+    player.source = {
+        type: 'video',
+        title: 'Example title',
+        sources: [
+            {
+                src: '/video/${shortVideo.videoId}/file',
+                type: 'video/mp4',
+                size: 720,
+            }
+        ]
+    };
+
 </script>
 </html>

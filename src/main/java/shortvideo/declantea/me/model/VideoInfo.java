@@ -22,10 +22,10 @@ public class VideoInfo {
     @NotNull
     @NoXSSString
     private String videoDescription;
-    @NotNull
+
     private CommonsMultipartFile videoFile;
     private String videoFilePath;
-    @NotNull
+
     private CommonsMultipartFile videoCoverFile;
     private String videoCoverFilePath;
 

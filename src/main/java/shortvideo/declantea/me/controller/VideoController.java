@@ -4,14 +4,21 @@ package shortvideo.declantea.me.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import shortvideo.declantea.me.Enum.VideoStateEnum;
 import shortvideo.declantea.me.entity.Favorite;
+import shortvideo.declantea.me.entity.ShortVideo;
 import shortvideo.declantea.me.entity.UserAccount;
 import shortvideo.declantea.me.model.CommentInfo;
 import shortvideo.declantea.me.model.FavoriteInfo;
@@ -20,10 +27,17 @@ import shortvideo.declantea.me.service.CommentService;
 import shortvideo.declantea.me.service.FavoriteService;
 import shortvideo.declantea.me.service.UserService;
 import shortvideo.declantea.me.service.VideoService;
+import shortvideo.declantea.me.util.MultipartFileSender;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
@@ -74,11 +88,22 @@ public class VideoController {
         return this.videoService.loadImgFromFile(videoUUID);
     }
 
+//    @GetMapping(value = "/{videoUUID}/file")
+//    @ResponseBody
+//    public byte[] video(HttpServletResponse response, @PathVariable String videoUUID) throws IOException {
+//        return this.videoService.loadVideoFromFile(videoUUID);
+//    }
+
     @GetMapping(value = "/{videoUUID}/file")
     @ResponseBody
-    public byte[] video(HttpServletResponse response, @PathVariable String videoUUID) throws IOException {
-        return this.videoService.loadVideoFromFile(videoUUID);
+    public void video(HttpServletRequest request, HttpServletResponse response, @PathVariable String videoUUID) throws Exception {
+        File vide=videoService.getVideResourceFile(videoUUID);
+        MultipartFileSender.fromPath(vide.toPath())
+                .with(request)
+                .with(response)
+                .serveResource();
     }
+
 
 
     @GetMapping(value = "/{videoUUID}/comments")

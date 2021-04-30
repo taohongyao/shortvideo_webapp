@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import shortvideo.declantea.me.Enum.AuthorityEnum;
 
 @Configuration
 @EnableWebSecurity
@@ -44,11 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .authorizeRequests().antMatchers("/account/**")
-//                // .access("hasAnyAuthority(T(com.edu.neu.project.roles.AuthorityEnum).Manager, T(com.edu.neu.project.roles.AuthorityEnum).Customer)")
-//                .hasAnyAuthority(AuthorityEnum.Manager.getAuthority(), AuthorityEnum.Customer.getAuthority(), AuthorityEnum.Admin.getAuthority())
-//                .and()
+        httpSecurity
+                .authorizeRequests().antMatchers("/video/upload","/account/videos_manage","/video/{\\w+}/upload")
+                // .access("hasAnyAuthority(T(com.edu.neu.project.roles.AuthorityEnum).Manager, T(com.edu.neu.project.roles.AuthorityEnum).Customer)")
+                .hasAnyAuthority(AuthorityEnum.Manager.getAuthority(), AuthorityEnum.Customer.getAuthority(), AuthorityEnum.Admin.getAuthority())
+                .and()
 //                .authorizeRequests().antMatchers("/productmanager/**")
 //                .hasAnyAuthority(AuthorityEnum.Manager.getAuthority(), AuthorityEnum.Admin.getAuthority())
 //                .and()
@@ -58,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authorizeRequests().antMatchers("/admin/**")
 //                .hasAuthority(AuthorityEnum.Admin.getAuthority())
 //                .and()
-//                .exceptionHandling().accessDeniedPage("/403");
+                .exceptionHandling().accessDeniedPage("/403");
 
 
         httpSecurity.authorizeRequests().and().formLogin()

@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import shortvideo.declantea.me.Enum.CommentStateEnum;
 
 import javax.persistence.*;
@@ -31,7 +32,8 @@ public class Comment implements Serializable {
     @JoinColumn(name = "user_id")
     private UserAccount posterUser;
 
-    @Column(name = "context", nullable = false)
+    @Column(name = "context", nullable = false,length = 65535, columnDefinition="TEXT")
+    @Type(type="text")
     private String commentContext;
 
     @CreationTimestamp

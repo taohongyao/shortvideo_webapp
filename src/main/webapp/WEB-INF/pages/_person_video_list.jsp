@@ -1,50 +1,67 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: declan
+  Date: 4/30/2021
+  Time: 1:57 AM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <link href='<spring:url value="/css/styles.css"/>' rel="stylesheet"/>
-    <%--    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>--%>
-    <%--    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--%>
-    <%--    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--%>
+    <title>VideoList</title>
 </head>
 <body>
 
-<div class="right">
-    <div id="output" class="videos-previewer">
-    </div>
-</div>
+<div class="video_list" id="video_list">
+<%--    <div class="video_block">--%>
+<%--        <img class="video_img" src="https://fsb.zobj.net/crop.php?r=gyWMu8lZi2FdHhYoEbXdy7BZrv4bj9jOtQ5_8pNHKdCotxtbb-d8zlYZ21JonBEvRw4-iO6CzAN_SgRQH2enMCJE8iJGCjM-Sd44yBThUi2nq4jiZTF4f9fW047fYKWtso8dA-W52ktsbbfj">--%>
+<%--        <div class="video_img_cover"> </div>--%>
+<%--        <div class="video_description"> <label>Hello World</label> </div>--%>
 
+<%--        <div class="video_info">--%>
+<%--            <div class="video_title">CSYE6220 J2EE web tools and dev</div>--%>
+<%--            <div class="video_info_bottom">--%>
+
+<%--                <div class="video_info_i_label_tag">--%>
+<%--                    <i class="material-icons">face</i>--%>
+<%--                    <label>Declan</label>--%>
+<%--                </div>--%>
+<%--                <div class="video_info_i_label_tag">--%>
+
+<%--                    <i class="material-icons favorite">favorite</i>--%>
+<%--                    <label>0</label>--%>
+<%--                </div>--%>
+
+<%--                <div class="video_info_i_label_tag comment">--%>
+<%--                    <i class="material-icons">question_answer</i>--%>
+<%--                    <label>0</label>--%>
+<%--                </div>--%>
+
+<%--            </div>--%>
+
+<%--        </div>--%>
+<%--    </div>--%>
+</div>
 </body>
 
 <script>
 
-    $("[data-pid]").click(function () {
-        refresh();
-    });
-
-    <c:if test="${param.updatesuccessfully == true}">
-    alert("update successfully")
-    </c:if>
 
     $(document).ready(() => {
         refresh();
     });
 
-    function isAllDigit(s) {
-        let regex = RegExp("^[0-9]+$")
-        return regex.test(s)
-    }
-
     function updateFavoriteIcon(data){
         let video_id=data['shortVideoId'];
         $("#i_favorite_"+video_id).unbind();
         if(data['favorite']){
-            $("#i_favorite_"+video_id).html('favorite').css({color:"red"});
+            $("#i_favorite_"+video_id).html('favorite').removeClass("favorite").addClass("has_favorite");
             $("#i_favorite_"+video_id).click({video_id:video_id,ajax_type:'DELETE'},restFavorite);
         }else {
-            $("#i_favorite_"+video_id).html('favorite_border').css({color:"black"});
+            $("#i_favorite_"+video_id).html('favorite').removeClass("has_favorite").addClass("favorite");
             $("#i_favorite_"+video_id).click({video_id:video_id,ajax_type:'POST'},restFavorite);
         }
     }
@@ -64,18 +81,6 @@
         });
     }
 
-    function deleteVideo(event){
-        let video_id=event.data.video_id;
-        $.ajax({
-            url:"/video/"+video_id+"/delete",
-            type:"DELETE",
-            contentType: "application/json; charset=utf-8",
-            dataType   : "json",
-            success    : (data)=>{
-                refresh();
-            }
-        });
-    }
 
 
     function updateFavoriteComponent(data){
@@ -93,71 +98,131 @@
         $.post('videos_list',{}, generateProductCallback);
     }
 
+    function deleteVideo(event){
+        let video_id=event.data.video_id;
+        $.ajax({
+            url:"/video/"+video_id+"/delete",
+            type:"DELETE",
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+            success    : (data)=>{
+                refresh();
+            }
+        });
+    }
+
     const generateProductCallback = (data) => {
         let auth = $("#authority").val();
-        $('#output').empty();
+        $('#video_list').empty();
         if (data.length !== 0) {
             $.each(data, (key, value) => {
-                function addLi(prop, propdisplayname, value) {
-                    $('<li/>', {
-                        'id': 'li_' + prop + '_'.concat(value['videoId']),
-                        'html': propdisplayname + ": <lable id='label_"+propdisplayname+'_'+value['videoId']+"'>" + value[prop]+"</lable>"
-                    }).appendTo("#" + 'ul_'.concat(value['videoId']));
-                }
-                $('<ul/>', {
-                    'id': 'ul_'.concat(value['videoId']),
-                }).appendTo("#output");
-                $('<li/>', {
-                    'id': 'li_image_'.concat(value['videoId']),
-                    'html': '<img class="product-image" src="/video/' + value["videoId"] + '/cover"/>'
-                }).appendTo("#" + 'ul_'.concat(value['videoId']));
-                addLi('videoTitle', 'title', value);
-                addLi('videoDescription', 'description', value);
-                // addLi('displayName', 'creater', value);
-                $('<li/>', {
-                    'html': "creater: <a href='<spring:url value="/account/{id}/page"/>'>{user_name}</a>".replace("{id}", value['userID']).replace("{user_name}", value['displayName'])
-                }).appendTo("#" + 'ul_'.concat(value['videoId']));
-                addLi('favoriteCounter', 'favorite', value);
-                addLi('commentCounter', 'comment', value);
-                $('<li/>', {
-                    'html': "<a href='<spring:url value="/video/{id}/watch"/>'>watch</a>".replace("{id}", value['videoId'])
-                }).appendTo("#" + 'ul_'.concat(value['videoId']));
 
+                $('<div/>',{
+                    'class':'video_block',
+                    'id':'video_block_'.concat(value['videoId'])
+                }).appendTo("#video_list");
+
+                video_a=$('<a/>',{
+                    'href':'/video/{id}/watch'.replace("{id}",value['videoId'])
+                });
+
+                $('<img/>',{
+                    'class':'video_img',
+                    'src':'/video/{vid}/cover'.replace("{vid}",value['videoId'])
+                }).appendTo(video_a);
+
+                $('<div/>',{
+                    'class':'video_img_cover',
+                }).appendTo(video_a);
+
+                $('<div/>',{
+                    'class':'video_description',
+                    'html':'<label id="label_description_{vid}">{description}</label>'.replace("{vid}",value['videoId']).replace("{description}",value['videoDescription'])
+                }).appendTo(video_a);
+
+                video_a.appendTo("#video_block_".concat(value['videoId']));
+
+                video_info=$('<div/>',{
+                    'class':'video_info'
+                });
+                video_a=$('<a/>',{
+                    'href':'/video/{id}/watch'.replace("{id}",value['videoId'])
+                });
+
+                $('<div/>',{
+                    'id':'label_title_'.concat(value['videoId']),
+                    'class':'video_title',
+                    'html':value['videoTitle']
+                }).appendTo(video_a);
+                video_a.appendTo(video_info);
+
+                video_info_bottom=$('<div/>',{
+                    'class':'video_info_bottom'
+                });
+                video_info_bottom.appendTo(video_info);
+                video_info.appendTo("#video_block_".concat(value['videoId']));
                 <c:choose>
                 <c:when test="${customer_manage_page}">
-                $('<i/>',{
-                        'class':'material-icons',
-                        'style':'color:black;cursor:pointer',
-                        'id':'i_settings_'+value['videoId'],
-                        'html':'settings'
-                    }
-                ).click( () => {
-                    window.location.href='/video/{vid}/upload'.replace("{vid}",value['videoId']);
-                }).appendTo("#" + 'ul_'.concat(value['videoId']));
+                setting_a=$('<a/>',{
+                    'href':'/video/{vid}/upload'.replace("{vid}",value['videoId'])
+                });
 
-                $('<i/>',{
-                        'class':'material-icons',
-                        'style':'color:black;cursor:pointer',
-                        'id':'i_delete_'+value['videoId'],
-                        'html':'delete'
-                    }
-                ).click( {video_id:value['videoId']},deleteVideo).appendTo("#" + 'ul_'.concat(value['videoId']));
+                $('<div/>',{
+                    'class':'video_info_i_label_tag',
+                    'html':'<i class="material-icons">settings</i>'
+                }).appendTo(setting_a);
+                setting_a.appendTo(video_info_bottom);
+
+
+                $('<div/>',{
+                    'class':'video_info_i_label_tag',
+                    'html':'<i class="material-icons">delete</i>'
+                }).click( {video_id:value['videoId']},deleteVideo).appendTo(video_info_bottom);
                 </c:when>
                 <c:otherwise>
+
+                creator_a=$('<a/>',{
+                    'href':'/account/{id}/page'.replace("{id}",value['userID'])
+                });
+
+                $('<div/>',{
+                    'class':'video_info_i_label_tag',
+                    'html':'<i class="material-icons">face</i><label>{account}</label>'.replace("{account}",value['displayName'])
+                }).appendTo(creator_a);
+                creator_a.appendTo(video_info_bottom);
+                favorite_div=$('<div/>',{
+                    'class':'video_info_i_label_tag'
+                });
+
                 $('<i/>',{
-                        'class':'material-icons',
-                        'style':'color:black;cursor:pointer',
+                        'class':'material-icons favorite',
                         'id':'i_favorite_'+value['videoId'],
-                        'html':'favorite_border'
+                        'html':'favorite'
                     }
-                ).click({video_id:value['videoId'],ajax_type:'POST'},restFavorite).appendTo("#" + 'ul_'.concat(value['videoId']));
+                ).click({video_id:value['videoId'],ajax_type:'POST'},restFavorite).appendTo(favorite_div);
+                $('<label/>',{
+                    'id':"label_favorite_".concat(value['videoId']),
+                    'html':value['favoriteCounter']
+                }).appendTo(favorite_div);
+                favorite_div.appendTo(video_info_bottom);
+
+                $('<div/>',{
+                    'class':'video_info_i_label_tag',
+                    'html':'<i class="material-icons comment">question_answer</i><label id="label_comment_{vid}" >{counter}</label>'.replace("{counter}",value['commentCounter']).replace("{vid}",value['videoId'])
+                }).appendTo(video_info_bottom);
+                video_info_bottom.appendTo(video_info);
+                video_info.appendTo("#video_block_".concat(value['videoId']));
+
+
                 if(user_id!=undefined&&user_id!=null){
                     restFavorite(
                         jQuery.Event( "getInfo", {data:{ video_id:value['videoId'],ajax_type:'GET' }} )
                     );
                 }
+
                 </c:otherwise>
                 </c:choose>
+
 
                 if (auth === "customer") {
 
@@ -168,8 +233,9 @@
         } else {
             $('<p/>', {
                 'html': "No Such Video"
-            }).appendTo($('#output'))
+            }).appendTo($('#video_list'))
         }
     };
 </script>
+
 </html>

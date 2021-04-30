@@ -30,6 +30,7 @@
 <form:form action="upload" method="post" modelAttribute="videoInfo" enctype="multipart/form-data">
     <input id="short_video_id" name="short_video_id" type="hidden" value="${videoInfo.videoId}">
     <input id="isimagechanged" name="isimagechanged" type="hidden" value="false"/>
+    <div style="top:130px;position: absolute;">
     <table style="text-align: left">
         <tr>
             <td>Title</td>
@@ -68,6 +69,7 @@
         </tr>
 
     </table>
+    </div>
 </form:form>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -111,9 +113,9 @@
     $("#name").on('keyup change', function (e) {
         let inp = $("#name").val();
         let message = "";
-        if (findInvalidChars(inp)) message += "Invalid input; ";
+        // if (findInvalidChars(inp)) message += "Invalid input; ";
         if (inp.length < 3) message += "Too Short; ";
-        if (inp.length > 40) message += "Too Long; ";
+        // if (inp.length > 40) message += "Too Long; ";
         $("#nameerror").text(message);
     });
 
@@ -124,11 +126,11 @@
         $("#priceerror").text(message);
     });
 
-    $("#description").on('keyup change', function (e) {
-        let inp = $("#description").val();
+    $("#videoDescription").on('keyup change', function (e) {
+        let inp = $("#videoDescription").val();
         let message = "";
         if (findXSSString(inp)) message += "Find XSS"
-        $("#descriptionerror").text(message);
+        $("#videoDescription").text(message);
     });
 
 </script>

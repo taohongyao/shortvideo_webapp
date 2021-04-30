@@ -1,9 +1,11 @@
 package shortvideo.declantea.me.service;
 
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import shortvideo.declantea.me.entity.ShortVideo;
 import shortvideo.declantea.me.model.UserInfo;
 import shortvideo.declantea.me.model.VideoInfo;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,10 @@ public interface VideoService {
     byte[] loadImgFromFile(String filePath) throws IOException;
 
     byte[] loadVideoFromFile(String videoUUID) throws IOException;
+
+    StreamingResponseBody getStreamResponseBody(String videoUUID);
+
+    File getVideResourceFile(String videoUUID);
 
     ShortVideo getShortVideo(ShortVideo shortVideo);
     ShortVideo getShortVideo(VideoInfo videoInfo);

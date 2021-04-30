@@ -28,6 +28,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("Dispatcher", new DispatcherServlet(appContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
+        dispatcher.setAsyncSupported(true);
         ContextLoaderListener contextLoaderListener = new ContextLoaderListener(appContext);
         servletContext.addListener(contextLoaderListener);
     }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import shortvideo.declantea.me.Enum.VideoStateEnum;
 
@@ -49,7 +50,8 @@ public class ShortVideo implements Serializable {
     @Column(name = "video_title", nullable = false)
     private String videoTitle;
 
-    @Column(name = "video_description", nullable = false)
+    @Column(name = "video_description", nullable = false,length = 65535, columnDefinition="TEXT")
+    @Type(type="text")
     private String videoDescription;
     @Column(name = "video_path", nullable = false)
     private String videoPath;

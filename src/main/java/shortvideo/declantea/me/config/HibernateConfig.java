@@ -74,7 +74,7 @@ public class HibernateConfig {
         properties.put("hibernate.c3p0.max_size",20);
         properties.put("hibernate.c3p0.timeout",1800);
         properties.put("hibernate.c3p0.max_statements",150);
-        properties.put("hibernate.hbm2ddl.auto","create");
+        properties.put("hibernate.hbm2ddl.auto","update");
         return properties;
     }
 

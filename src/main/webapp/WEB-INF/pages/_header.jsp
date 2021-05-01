@@ -11,18 +11,21 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
+
   <head>
     <title>Login</title>
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
     <link href="<spring:url value="/css/style_new.css"/>" rel="stylesheet" type="text/css">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="<spring:url value="/js/style_new.js"/>"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   </head>
-</head>
+
 <body>
 <security:authorize access="hasAnyAuthority('${AuthorityEnum.Customer.authority}')">
   <input id="authority" type="hidden" value="customer"/>
@@ -101,7 +104,7 @@
           <input class="login_line_input" type="password" name="password" placeholder="Password">
         </div>
         <div class="login_btns">
-          <input  type="submit" value="Login">
+          <button value="Login">Login</button>
           <button type="button" onclick="location.href = '<spring:url value="/account/signup"/>';" >Sigup</button>
         </div>
         <c:if test="${param.error == 'true'}"><label style="color: red">login error</label></c:if>

@@ -31,6 +31,8 @@ public interface VideoService {
     List<ShortVideo> getAllApprovedVideosByKeyword(String keyword);
 
     List<ShortVideo> getAllApprovedVideos();
+    List<VideoInfo> getAllApprovedVideosInfo();
+
     List<ShortVideo> getAllNotApprovedVideos();
     List<ShortVideo> getAllPendingVideos();
     List<ShortVideo> getDeletedPendingVideos();

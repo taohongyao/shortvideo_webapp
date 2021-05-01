@@ -112,13 +112,23 @@
                     'href':'/video/{id}/watch'.replace("{id}",value['videoId'])
                 });
 
+                $('<div/>',{
+                    'class':'video_img_cover',
+                }).appendTo(video_a);
+
+                video_img_container=$('<div/>',{
+                    'class':'video_img_container',
+                });
+
                 $('<img/>',{
                     'class':'video_img',
                     'src':'/video/{vid}/cover'.replace("{vid}",value['videoId'])
-                }).appendTo(video_a);
+                }).appendTo(video_img_container);
+                video_img_container.appendTo(video_a);
 
-                $('<div/>',{
-                    'class':'video_img_cover',
+
+                video_img_container=$('<div/>',{
+                    'class':'video_description_back',
                 }).appendTo(video_a);
 
                 $('<div/>',{

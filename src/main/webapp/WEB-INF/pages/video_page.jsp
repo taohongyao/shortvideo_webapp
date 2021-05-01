@@ -9,15 +9,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Video</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.7/plyr.css" />
-    <script src="https://cdn.plyr.io/3.6.7/plyr.js"></script>
+
 </head>
 <body>
 <jsp:include page="_header.jsp"/>
 
+<link rel="stylesheet" href="https://cdn.plyr.io/3.6.7/plyr.css" />
+<script src="https://cdn.plyr.io/3.6.7/plyr.polyfilled.js"></script>
 <div class="video_page_container">
 
     <div class="player_container">
@@ -36,7 +38,8 @@
 
         </div>
         <div class="player_outter">
-            <video id="player" class="player" >
+            <video id="player" class="player">
+                <source src="/video/${shortVideo.videoId}/file" type="video/mp4" size="720">
             </video>
         </div>
     </div>
@@ -79,6 +82,7 @@
 
     </div>
 </div>
+
 </body>
 <script>
     $(document).ready(() => {
@@ -206,17 +210,17 @@
     }
 
     const player = new Plyr('#player');
-    player.source = {
-        type: 'video',
-        title: 'Example title',
-        sources: [
-            {
-                src: '/video/${shortVideo.videoId}/file',
-                type: 'video/mp4',
-                size: 720,
-            }
-        ]
-    };
+    <%--player.source = {--%>
+    <%--    type: 'video',--%>
+    <%--    title: 'Example title',--%>
+    <%--    sources: [--%>
+    <%--        {--%>
+    <%--            src: '/video/${shortVideo.videoId}/file',--%>
+    <%--            type: 'video/mp4',--%>
+    <%--            size: 720,--%>
+    <%--        }--%>
+    <%--    ]--%>
+    <%--};--%>
 
 </script>
 </html>

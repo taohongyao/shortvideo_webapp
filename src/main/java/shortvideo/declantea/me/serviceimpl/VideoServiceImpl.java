@@ -250,6 +250,15 @@ public class VideoServiceImpl implements VideoService {
         return shortVideoDAO.findAllApproveShortVideo();
     }
 
+
+    @Override
+    public List<VideoInfo> getAllApprovedVideosInfo() {
+        List<VideoInfo> list=Collections.synchronizedList(new ArrayList<VideoInfo>());
+        shortVideoDAO.findAllApproveShortVideo().parallelStream().forEach(a->list.add(convertShortVideo2VideoInfo(a)));
+
+        return list;
+    }
+
     @Override
     public List<ShortVideo> getAllNotApprovedVideos() {
         return shortVideoDAO.findAllNotApproveShortVideo();

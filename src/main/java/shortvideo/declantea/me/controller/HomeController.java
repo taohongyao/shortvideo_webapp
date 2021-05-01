@@ -32,9 +32,9 @@ public class HomeController {
     @PostMapping(value = "/videos_list")
     @ResponseBody
     public Object homePageVideoList() {
-        List<VideoInfo> list=videoService.getAllApprovedVideos().stream()
-                .map(T->videoService.convertShortVideo2VideoInfo(T)).collect(Collectors.toList());
-        return list;
+//        List<VideoInfo> list=videoService.getAllApprovedVideos().stream()
+//                .map(T->videoService.convertShortVideo2VideoInfo(T)).collect(Collectors.toList());
+        return videoService.getAllApprovedVideosInfo();
     }
 
 }

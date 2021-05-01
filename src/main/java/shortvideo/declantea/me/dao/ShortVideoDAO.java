@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
 
-    public List findAllShortVideoListByUserId(long userId){
+    public List<ShortVideo> findAllShortVideoListByUserId(long userId){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.userAccount.id=:userId and shortvideo.videoState=:videoState");
         query.setParameter("userId",userId);
@@ -21,7 +21,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
     }
 
 
-    public List findAllApprovedShortVideoListByKeyword(String keyword){
+    public List<ShortVideo> findAllApprovedShortVideoListByKeyword(String keyword){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.videoTitle like :keyWord and shortvideo.videoState=:videoState");
         query.setParameter("keyWord","%"+keyword+"%");
@@ -29,7 +29,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
-    public List findNotDeletedShortVideoListByUserId(long userId){
+    public List<ShortVideo> findNotDeletedShortVideoListByUserId(long userId){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.userAccount.id=:userId and shortvideo.videoState=:videoState");
         query.setParameter("userId",userId);
@@ -37,7 +37,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
-    public List findPendingShortVideoListByUserId(long userId){
+    public List<ShortVideo> findPendingShortVideoListByUserId(long userId){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.userAccount.id=:userId and shortvideo.videoState=:videoState");
         query.setParameter("userId",userId);
@@ -45,7 +45,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
-    public List findNotApproveShortVideoListByUserId(long userId){
+    public List<ShortVideo> findNotApproveShortVideoListByUserId(long userId){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.userAccount.id=:userId and shortvideo.videoState=:videoState");
         query.setParameter("userId",userId);
@@ -53,7 +53,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
-    public List findApproveShortVideoListByUserId(long userId){
+    public List<ShortVideo> findApproveShortVideoListByUserId(long userId){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo  shortvideo where shortvideo.userAccount.id=:userId and shortvideo.videoState=:videoState");
         query.setParameter("userId",userId);
@@ -61,7 +61,7 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
         return query.list();
     }
 
-    public List findAllNotDeletedShortVideo(){
+    public List<ShortVideo> findAllNotDeletedShortVideo(){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo s where s.videoState!=:state");
         query.setParameter("state",VideoStateEnum.Delete);
@@ -69,28 +69,28 @@ public class ShortVideoDAO extends AbstractHibernateDao<ShortVideo,String>{
     }
 
 
-    public List findAllApproveShortVideo(){
+    public List<ShortVideo> findAllApproveShortVideo(){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
         query.setParameter("state",VideoStateEnum.Approve);
         return query.list();
     }
 
-    public List findAllNotApproveShortVideo(){
+    public List<ShortVideo> findAllNotApproveShortVideo(){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
         query.setParameter("state",VideoStateEnum.NotApprove);
         return query.list();
     }
 
-    public List findAllPendingShortVideo(){
+    public List<ShortVideo> findAllPendingShortVideo(){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
         query.setParameter("state",VideoStateEnum.Pending);
         return query.list();
     }
 
-    public List findAllDeletedShortVideo(){
+    public List<ShortVideo> findAllDeletedShortVideo(){
         Session session = this.getCurrentSession();
         Query query=session.createQuery("From ShortVideo s where s.videoState=:state");
         query.setParameter("state",VideoStateEnum.Delete);

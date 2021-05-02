@@ -115,7 +115,7 @@
             </div>
 
             <div class="submit-container">
-                <input type="hidden" id="g-recaptcha-response" name="g_recaptcha_response">
+                <input type="hidden" id="g-recaptcha-response" name="gRecaptchaResponse">
                 <input type="hidden" name="action" value="validate_captcha">
                 <button id="submit" value="Submit" > Submit </button>
             </div>

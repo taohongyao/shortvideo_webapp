@@ -21,9 +21,8 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>Registration</title>
     <script>
-        var token="6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse";
         function onSubmit(token) {
-            document.getElementById("demo-form").submit();
+            document.getElementById("useraccountinfo").submit();
         }
     </script>
 </head>
@@ -110,7 +109,7 @@
 
             <div>
                 <button id="submit" class="g-recaptcha"
-                        data-sitekey="reCAPTCHA_site_key"
+                        data-sitekey="6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse"
                         data-callback='onSubmit'
                         data-action='submit' disabled>Sign up</button>
                 <!--				<button id="submitButton" value="Submit"> Submit </button>-->

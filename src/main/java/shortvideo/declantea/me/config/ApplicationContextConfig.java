@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import shortvideo.declantea.me.dao.AuthorizationDAO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,6 +71,7 @@ public class ApplicationContextConfig implements WebMvcConfigurer {
         logger.debug("Bcrypt Password Encoder created");
         return new BCryptPasswordEncoder();
     }
+
 
 }
 

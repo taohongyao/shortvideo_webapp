@@ -29,6 +29,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,10 +55,13 @@ public class VideoServiceImpl implements VideoService {
         if(!folder.exists()){
             folder.mkdirs();
         }
-        try (OutputStream os = Files.newOutputStream(filepath)) {
-            os.write(file.getBytes());
-            os.flush();
-        }
+
+        InputStream inputStream=file.getInputStream();
+        java.nio.file.Files.copy(
+                inputStream,
+                filepath,
+                StandardCopyOption.REPLACE_EXISTING);
+        IOUtils.closeQuietly(inputStream);
     }
 
 
@@ -184,24 +188,24 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public StreamingResponseBody getStreamResponseBody(String videoUUID){
-            ShortVideo shortVideo = getShortVideoByVideoId(videoUUID);
-            Path path = Paths.get(userVideoFolderPath, shortVideo.getVideoPath());
-            return out -> {
-                try {
-                    final InputStream inputStream = new FileInputStream(path.toFile());
+        ShortVideo shortVideo = getShortVideoByVideoId(videoUUID);
+        Path path = Paths.get(userVideoFolderPath, shortVideo.getVideoPath());
+        return out -> {
+            try {
+                final InputStream inputStream = new FileInputStream(path.toFile());
 
-                    byte[] bytes = new byte[1024];
-                    int length;
-                    while ((length = inputStream.read(bytes)) >= 0) {
-                        out.write(bytes, 0, length);
-                    }
-                    inputStream.close();
-                    out.flush();
-
-                } catch (final Exception e) {
-                    logger.error("Exception while reading and streaming data {} ", e);
+                byte[] bytes = new byte[1024];
+                int length;
+                while ((length = inputStream.read(bytes)) >= 0) {
+                    out.write(bytes, 0, length);
                 }
-            };
+                inputStream.close();
+                out.flush();
+
+            } catch (final Exception e) {
+                logger.error("Exception while reading and streaming data {} ", e);
+            }
+        };
     }
 
     @Override

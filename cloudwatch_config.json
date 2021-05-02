@@ -11,6 +11,21 @@
             "file_path": "/var/lib/tomcat9/logs/short_video_app.log",
             "log_group_name": "declantea.me",
             "log_stream_name": "short.video.webapp"
+          },
+          {
+            "file_path": "/var/lib/tomcat9/logs/catalina.*.log",
+            "log_group_name": "declantea.me",
+            "log_stream_name": "short.video.webapp.catalina"
+          },
+          {
+            "file_path": "/var/lib/tomcat9/logs/localhost_access_log.*.txt",
+            "log_group_name": "declantea.me",
+            "log_stream_name": "short.video.webapp.catalina.access"
+          },
+          {
+            "file_path": "/var/lib/tomcat9/logs/localhost.*.log",
+            "log_group_name": "declantea.me",
+            "log_stream_name": "short.video.webapp.catalina.host"
           }
         ]
       }

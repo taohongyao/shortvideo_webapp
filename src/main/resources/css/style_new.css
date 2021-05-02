@@ -595,6 +595,7 @@ body {
 	vertical-align: middle;
 }
 
+span.valid-error,
 label.valid-error{
 	color:red;
 	font-size: 13px;

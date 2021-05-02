@@ -111,11 +111,11 @@
                 <label>Repeat password
                     <form:errors path="retypePassword" cssClass="valid-error"/>
                 </label>
-                <input id="retypePassword" password="text" name="retypePassword" value="${useraccount.retypePassword}" />
+                <input id="retypePassword" type="password" name="retypePassword" value="${useraccount.retypePassword}" />
             </div>
 
             <div class="submit-container">
-                <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" id="g-recaptcha-response" name="g_recaptcha_response">
                 <input type="hidden" name="action" value="validate_captcha">
                 <button id="submit" value="Submit" > Submit </button>
             </div>

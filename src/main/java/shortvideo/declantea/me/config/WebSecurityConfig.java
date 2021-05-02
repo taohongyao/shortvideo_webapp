@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,6 +28,9 @@ import javax.sql.DataSource;
 @Getter(AccessLevel.PRIVATE)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    @Value("${REMEMBER_ME_INIT_TABLE}")
+    private String db_password;
 
     @Autowired
     private UserDetailsService userDetailsServiceImpl;
@@ -95,7 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setCreateTableOnStartup(false);
+        db.setCreateTableOnStartup(true);
         db.setDataSource(dataSource);
         return db;
     }

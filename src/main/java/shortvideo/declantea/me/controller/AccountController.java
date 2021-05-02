@@ -1,6 +1,8 @@
 package shortvideo.declantea.me.controller;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,9 @@ import shortvideo.declantea.me.service.UserService;
 import shortvideo.declantea.me.service.VideoService;
 
 import javax.validation.Valid;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.*;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +35,8 @@ public class AccountController {
 
     @Autowired
     private UserService userService;
+
+    private static Logger logger= LoggerFactory.getLogger(AccountController.class);
 
 
     @PostMapping(value = "/{user_id}/videos_list")
@@ -65,8 +72,22 @@ public class AccountController {
     }
 
     @PostMapping("/signup")
-    public ModelAndView registration(ModelAndView mv, @ModelAttribute("useraccountinfo") @Valid UserAccountInfo userAccountInfo, BindingResult result) {
-        System.out.println("userAccountInfo = " + userAccountInfo.toString());
+    public ModelAndView registration(ModelAndView mv, @ModelAttribute("useraccountinfo") @Valid UserAccountInfo userAccountInfo, BindingResult result) throws IOException {
+        logger.debug("UserAccount:{}",userAccountInfo);
+        if(userAccountInfo.getGRecaptchaResponse()!=null){
+            URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            String data="secrete:6LeswMIaAAAAAPG3gIKhgFHyQ_uXYshEfGzm4oeK&response="+userAccountInfo.getGRecaptchaResponse()
+                    +"&remoteip="+InetAddress.getLocalHost().getHostAddress();
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+            con.setConnectTimeout(1000);
+            con.setReadTimeout(1000);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(data);
+            logger.debug(con.getResponseMessage());
+        }
+
         if (result.hasErrors()) {
             mv.setViewName("registration");
             return mv;

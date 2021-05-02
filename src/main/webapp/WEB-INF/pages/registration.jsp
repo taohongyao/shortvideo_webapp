@@ -17,14 +17,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse"></script>
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>Registration</title>
     <script>
-        function onSubmit(token) {
-            document.getElementById("useraccountinfo").submit();
-        }
+        grecaptcha.ready(function() {
+            // do request for recaptcha token
+            // response is promise with passed token
+            grecaptcha.execute('6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse', {action:'validate_captcha'})
+                .then(function(token) {
+                    // add token value to form
+                    document.getElementById('g-recaptcha-response').value = token;
+                });
+        });
     </script>
 </head>
 <body>
@@ -108,12 +114,10 @@
                 <input id="retypePassword" password="text" name="retypePassword" value="${useraccount.retypePassword}" />
             </div>
 
-            <div>
-                <button id="submit" class="g-recaptcha"
-                        data-sitekey="6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse"
-                        data-callback='onSubmit'
-                        data-action='submit' disabled>Sign up</button>
-                <!--				<button id="submitButton" value="Submit"> Submit </button>-->
+            <div class="submit-container">
+                <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
+                <input type="hidden" name="action" value="validate_captcha">
+                <button id="submit" value="Submit" > Submit </button>
             </div>
 
         </form:form>

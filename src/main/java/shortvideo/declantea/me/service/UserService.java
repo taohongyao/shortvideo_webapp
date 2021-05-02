@@ -6,10 +6,13 @@ import shortvideo.declantea.me.model.UserAccountInfo;
 import shortvideo.declantea.me.Enum.AuthorityEnum;
 import shortvideo.declantea.me.model.UserInfo;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
     UserAccount register(UserAccount userAccount);
+
+    boolean checkGRecaptchaResponse(UserAccountInfo userAccountInfo) throws IOException;
 
     UserInfo convertUserAccount2UserInfo(UserAccount userAccount);
 

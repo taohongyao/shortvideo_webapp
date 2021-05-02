@@ -115,6 +115,9 @@
             </div>
 
             <div class="submit-container">
+                <c:if test="${recaptcha_error}">
+                    <label class="valid-error">Please pass recaptcha</label>
+                </c:if>
                 <input type="hidden" id="g-recaptcha-response" name="gRecaptchaResponse">
                 <input type="hidden" name="action" value="validate_captcha">
                 <button id="submit" value="Submit" > Submit </button>

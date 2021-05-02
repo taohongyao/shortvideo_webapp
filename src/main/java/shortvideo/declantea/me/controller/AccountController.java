@@ -4,6 +4,7 @@ package shortvideo.declantea.me.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,11 @@ import shortvideo.declantea.me.service.UserService;
 import shortvideo.declantea.me.service.VideoService;
 
 import javax.validation.Valid;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
-import java.net.*;
+
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+
 import java.util.stream.Collectors;
 
 
@@ -73,19 +73,10 @@ public class AccountController {
 
     @PostMapping("/signup")
     public ModelAndView registration(ModelAndView mv, @ModelAttribute("useraccountinfo") @Valid UserAccountInfo userAccountInfo, BindingResult result) throws IOException {
-        logger.debug("UserAccount:{}",userAccountInfo);
-        if(userAccountInfo.getGRecaptchaResponse()!=null){
-            URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            String data="secrete:6LeswMIaAAAAAPG3gIKhgFHyQ_uXYshEfGzm4oeK&response="+userAccountInfo.getGRecaptchaResponse()
-                    +"&remoteip="+InetAddress.getLocalHost().getHostAddress();
-            con.setRequestMethod("POST");
-            con.setDoOutput(true);
-            con.setConnectTimeout(1000);
-            con.setReadTimeout(1000);
-            DataOutputStream out = new DataOutputStream(con.getOutputStream());
-            out.writeBytes(data);
-            logger.debug(con.getResponseMessage());
+        if(!userService.checkGRecaptchaResponse(userAccountInfo)){
+            mv.setViewName("registration");
+            mv.addObject("recaptcha_error",true);
+            return mv;
         }
 
         if (result.hasErrors()) {

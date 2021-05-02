@@ -257,8 +257,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<VideoInfo> getAllApprovedVideosInfo() {
-        List<VideoInfo> list=Collections.synchronizedList(new ArrayList<VideoInfo>());
-        shortVideoDAO.findAllApproveShortVideo().parallelStream().forEach(a->list.add(convertShortVideo2VideoInfo(a)));
+        List<VideoInfo> list=new ArrayList<>();
+        shortVideoDAO.findAllApproveShortVideo().stream().forEach(a->list.add(convertShortVideo2VideoInfo(a)));
 
         return list;
     }

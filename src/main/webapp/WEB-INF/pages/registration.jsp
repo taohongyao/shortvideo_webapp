@@ -140,7 +140,7 @@
 
 
     function canSubmit() {
-        if (checkName($("#username").val()) && checkName($("#displayName").val()) && checkPassword($("#password").val()) && matchPassword())
+        if (checkName($("#account").val()) && checkName($("#nick_name").val()) && checkPassword($("#password").val()) && matchPassword())
             $("#submit").attr("disabled", false)
     }
 
@@ -151,7 +151,7 @@
     $("#account").on('keyup change', function (e) {
         $("#usernameExistError").empty();
         let message = "";
-        let inp = $("#username").val();
+        let inp = $("#account").val();
 
         if (checkInvalidChars(inp)) message += "Invalid input; ";
         if (inp.length < 5) message += "Too Short; ";
@@ -162,7 +162,7 @@
 
     $("#nick_name").on('keyup change', function (e) {
         let message = "";
-        let inp = $("#displayName").val();
+        let inp = $("#nick_name").val();
         if (checkInvalidChars(inp)) message += "Invalid input(only digits, letters and '_'); ";
         if (inp.length < 5) message += "Too Short(at least 5); ";
         if (inp.length > 10) message += "Too Long(at most 10); ";

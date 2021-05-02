@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
@@ -47,7 +48,7 @@ public class HibernateConfig {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 //        sessionFactory.setConfigLocation(context.getResource("classpath:hibernate-cfg/hibernate.cfg.xml"));
         sessionFactory.setHibernateProperties(getHibernateProperties());
-//        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(dataSource());
         logger.debug("ENV:{}",System.getenv());
         sessionFactory.setPackagesToScan("shortvideo.declantea.me.entity");
         return sessionFactory;
@@ -61,12 +62,23 @@ public class HibernateConfig {
     }
 
     @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://"+db_endpoint+"/"+db_database+"?createDatabaseIfNotExist=true");
+        dataSource.setUsername(db_username);
+        dataSource.setPassword(db_password);
+        return dataSource;
+    }
+
+
+    @Bean
     public Properties getHibernateProperties(){
         Properties properties = new Properties();
-        properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
-        properties.put(Environment.URL,"jdbc:mysql://"+db_endpoint+"/"+db_database+"?createDatabaseIfNotExist=true");
-        properties.put(Environment.USER,db_username);
-        properties.put(Environment.PASS,db_password);
+//        properties.put(Environment.DRIVER,"com.mysql.cj.jdbc.Driver");
+//        properties.put(Environment.URL,"jdbc:mysql://"+db_endpoint+"/"+db_database+"?createDatabaseIfNotExist=true");
+//        properties.put(Environment.USER,db_username);
+//        properties.put(Environment.PASS,db_password);
         properties.put("show_sql",true);
         properties.put("hibernate.dialect","org.hibernate.dialect.MySQL8Dialect");
         properties.put("hibernate.connection.autocommit",true);

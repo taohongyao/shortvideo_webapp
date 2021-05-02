@@ -89,7 +89,7 @@
   <div class="login_panel">
     <c:choose>
       <c:when test="${pageContext.request.userPrincipal.name != null}">
-        <div class="login_btns">
+        <div class="login_btns logout_btns">
           <button onclick="location.href = '<spring:url value="/logout"/>';" >Logout</button>
         </div>
       </c:when>
@@ -103,6 +103,7 @@
           <i class="material-icons">lock</i>
           <input class="login_line_input" type="password" name="password" placeholder="Password">
         </div>
+        <input type="hidden" name="remember-me" value="true">
         <div class="login_btns">
           <button value="Login">Login</button>
           <button type="button" onclick="location.href = '<spring:url value="/account/signup"/>';" >Sigup</button>

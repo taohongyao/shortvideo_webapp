@@ -13,61 +13,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href='<spring:url value="/css/styles.css"/>' rel="stylesheet"/>
+    <link href="<spring:url value="/css/style_new.css"/>" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <title>Registration</title>
+    <script>
+        var token="6LeswMIaAAAAAK4WSr52wkT5k0JlmhfykwxRkBse";
+        function onSubmit(token) {
+            document.getElementById("demo-form").submit();
+        }
+    </script>
 </head>
 <body>
 
+<div class="relative"><div class="main_body">
+</div>
+
+    <div class="header">
+
+        <div class="header_btn" onclick="location.href = '<spring:url value="/"/>';">
+            <div>
+                <i class="material-icons">home</i>
+                <label class="header_text">HOME</label>
+            </div>
+        </div>
+
+        <div class="search_div">
+            <div>
+                <input id="search_bar" type="text" placeholder="Search" value="${keyword}">
+            </div>
+        </div>
+        <div id="search" class="search_btn">
+
+            <i  class="material-icons"><strong>search</strong></i>
+        </div>
+
+        <div class="login_panel">
+            <div class="login_btns logout_btns">
+                <button onclick="location.href = '<spring:url value="/"/>';" >Sign in</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
 <%--@elvariable id="useraccountinfo" type="com.edu.neu.project.model.UserAccountInfo"--%>
-<form:form modelAttribute="useraccountinfo" method="post" action="signup">
-    <table style="text-align: left">
-        <tr>
-            <td>Username:</td>
-            <td><input type="text" name="username" id="username" value="${useraccount.username}"/><form:errors
-                    path="username" cssClass="valid-error"/>
-            </td>
-            <td><label class="valid-error" id="usernameError"></label></td>
-            <c:if test="${usernameexist}">
-                <td><label id="usernameExistError" class="valid-error">username exist</label></td>
-            </c:if>
-        </tr>
+<div class="signup_panel">
+    <div class="signup_panel_mid">
 
-        <tr>
-            <td>Password:</td>
-            <td><input type="password" name="password" id="password" value="${useraccount.password}"/><form:errors
-                    path="password"
-                    cssClass="valid-error"/></td>
-            <td><label class="valid-error" id="passwordError"></label></td>
-        </tr>
 
-        <tr>
-            <td>Retype Password:</td>
-            <td><input type="password" name="retypePassword" id="retypePassword" value="${useraccount.retypePassword}"/><form:errors
-                    path=""
-                    cssClass="valid-error"/>
-            </td>
-            <td><label class="valid-error" id="retypePasswordError"></label></td>
-        </tr>
+        <div>
+            <h1>Sign up</h1>
+        </div>
 
-        <tr>
-            <td>Display Name:</td>
-            <td><input type="text" name="displayName" id="displayName" value="${useraccount.displayName}"/><form:errors
-                    path="displayName"
-                    cssClass="valid-error"/></td>
-            <td><label class="valid-error" id="displayNameError"></label></td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" value="Submit" id="submit" disabled/></td>
-                <%--            <td><input type="submit" value="Submit" id="submit" /></td>--%>
-        </tr>
-    </table>
-</form:form>
-<a href="<spring:url value="/home"/>">go home</a>
+        <form:form modelAttribute="useraccountinfo" method="post" action="signup">
+
+
+            <div class="sign_up_field">
+                <i class="material-icons">person</i>
+                <label>Account
+                    <c:if test="${usernameexist}">
+                        <label class="valid-error" >username exist</label>
+                    </c:if>
+                    <form:errors path="username" cssClass="valid-error"/>
+                </label>
+                <input id="account" type="text" name="username" value="${useraccount.username}"/>
+            </div>
+            <div class="sign_up_field">
+                <i class="material-icons">face</i>
+                <label>NickName
+                    <form:errors path="displayName" cssClass="valid-error"/>
+                </label>
+                <input id="nick_name" type="text" name="displayName" value="${useraccount.displayName}"/>
+            </div>
+            <div class="sign_up_field">
+                <i class="material-icons">lock</i>
+                <label>Password
+                    <form:errors path="password" cssClass="valid-error"/>
+                </label>
+                <input id="password" type="password" name="password" value="${useraccount.password}"/>
+            </div>
+
+            <div class="sign_up_field">
+
+                <i class="material-icons">done_all</i>
+                <label>Repeat password
+                    <form:errors path="retypePassword" cssClass="valid-error"/>
+                </label>
+                <input id="retypePassword" password="text" name="retypePassword" value="${useraccount.retypePassword}" />
+            </div>
+
+            <div>
+                <button id="submit" class="g-recaptcha"
+                        data-sitekey="reCAPTCHA_site_key"
+                        data-callback='onSubmit'
+                        data-action='submit' disabled>Sign up</button>
+                <!--				<button id="submitButton" value="Submit"> Submit </button>-->
+            </div>
+
+        </form:form>
+    </div>
+</div>
+
 </body>
+
 <script>
     function checkName(name) {
         let regex = RegExp("^[a-zA-Z0-9_]{5,10}$");
@@ -94,11 +148,10 @@
         return $("#password").val() === $("#retypePassword").val()
     }
 
-    $("#username").on('keyup change', function (e) {
+    $("#account").on('keyup change', function (e) {
         $("#usernameExistError").empty();
         let message = "";
         let inp = $("#username").val();
-
 
         if (checkInvalidChars(inp)) message += "Invalid input; ";
         if (inp.length < 5) message += "Too Short; ";
@@ -107,7 +160,7 @@
 
     });
 
-    $("#displayName").on('keyup change', function (e) {
+    $("#nick_name").on('keyup change', function (e) {
         let message = "";
         let inp = $("#displayName").val();
         if (checkInvalidChars(inp)) message += "Invalid input(only digits, letters and '_'); ";

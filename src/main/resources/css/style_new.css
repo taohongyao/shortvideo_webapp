@@ -212,6 +212,7 @@ body {
 	padding-right: 12%;
 	margin-top: 130px;
 	width: 100%;
+	text-align: center;
 	/*display: inline-block;*/
 }
 .video_block{
@@ -301,6 +302,7 @@ body {
 	height: var(--video_block_img_height);
 	width: var(--video_block_width);
 	overflow: hidden;
+	text-align:left;
 
 }
 .video_description>label{
@@ -543,3 +545,68 @@ body {
 	color: #FFFFFF;
 }
 
+
+/*Sign up page*/
+
+.signup_panel{
+	width: 100%;
+	margin-top: 130px;
+}
+.signup_panel h1{
+	font-size: 20px;
+	color: #1d1c1c;
+}
+.signup_panel_mid{
+	margin: 0 auto;
+	display: block;
+	width: 30%;
+}
+.signup_panel_mid *{
+	width: 100%;
+	font-size: 17px;
+	border-radius: 5px;
+	border-width: 1px;
+	padding: 5px 0;
+	font-family: "Segoe UI", Arial, sans-serif;
+}
+.signup_panel_mid label{
+	vertical-align: middle;
+	color: #007ac1;
+	font-weight: 400;
+}
+.signup_panel_mid input[type= text],
+.signup_panel_mid input[type=password]{
+	resize: none;
+	padding: 5px 5px;
+}
+
+.signup_panel_mid button{
+	border-radius: 4px;
+	border: none;
+	background-color: #007ac1;
+	color: #FFFFFF;
+}
+.sign_up_field{
+	display: inline-block;
+}
+.sign_up_field>i{
+	width: auto;
+	font-size: 25px;
+	vertical-align: middle;
+}
+
+label.valid-error{
+	color:red;
+	font-size: 13px;
+
+}
+#submit{
+	margin-top: 10px;
+	cursor: pointer;
+	height: 38px;
+}
+.logout_btns>button{
+	font-size: 15px;
+	width: 100%;
+	height: 35px;
+}
